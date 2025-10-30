@@ -1,26 +1,50 @@
-// src/App.js
-import React, { useState } from 'react';
-import Navbar from './components/navbar.jsx';
-import Formulario from './components/formulario.jsx';
-import Tabla from './components/tabla.jsx';
+import React, { useState } from "react";
+import NavbarTienda from "./components/NavbarTienda";
+import Inicio from "./components/inicio.jsx";
+import Productos from "./components/Productos";
+import Carrito from "./components/Carrito";
+import { Modal } from "react-bootstrap";
+import TextControlsExample from "./components/contacto.jsx";
 
-const App = () => {
-  const [datos, setDatos] = useState([]);
-  const [vista, setVista] = useState('formulario');
+function App() {
+  const [cartItems, setCartItems] = useState([]);
+  const [showCarrito, setShowCarrito] = useState(false);
 
-  const agregarDato = (dato) => {
-    setDatos([...datos, dato]);
+  const handleAddToCart = (producto) => {
+    setCartItems((prev) => [...prev, producto]);
   };
 
+  const handleRemoveItem = (item) => {
+    setCartItems((prev) => prev.filter((i, idx) => i.id !== item.id || idx !== prev.findIndex((x) => x.id === item.id)));
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+  };
+
+  const handleShowCarrito = () => setShowCarrito(true);
+  const handleCloseCarrito = () => setShowCarrito(false);
+
   return (
-    <div>
-      <Navbar setVista={setVista} />
-      <div style={{ padding: '20px' }}>
-        {vista === 'formulario' && <Formulario agregarDato={agregarDato} />}
-        {vista === 'tabla' && <Tabla datos={datos} />}
+    <>
+      <NavbarTienda cartCount={cartItems.length} onCartClick={handleShowCarrito} />
+      <Inicio />
+      <div id="productos">
+        <Productos onAddToCart={handleAddToCart} />
       </div>
-    </div>
+      <Modal show={showCarrito} onHide={handleCloseCarrito} centered size="md">
+        <Modal.Header closeButton>
+          <Modal.Title>Carrito</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Carrito cartItems={cartItems} onRemoveItem={handleRemoveItem} onClearCart={handleClearCart} />
+        </Modal.Body>
+      </Modal>
+      <div id="contacto" className="my-5">
+        <TextControlsExample />
+      </div>
+    </>
   );
-};
+}
 
 export default App;
