@@ -10,7 +10,7 @@ Este es un proyecto de **e-commerce** desarrollado con **React.js** y **Bootstra
 - **Agregar productos al carrito** y ver el contenido del carrito.
 - **Consumo de API** para obtener los productos dinámicamente.
 - **Formulario de contacto** para consultas de los usuarios.
-- Gestión de estado del carrito usando React Hooks (useState, useEffect).
+- Gestión de estado del carrito.
 
 ---
 
